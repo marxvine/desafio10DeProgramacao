@@ -1,0 +1,76 @@
+/*
+Autor : Marcus Vinicius Rodrigues de sousa aluno de Ciencia da computação
+Data inicio 13/08/2019
+Data Fim 13/08/2019
+Questão 10
+
+Soma dos primos
+
+Problema 10
+A soma dos primos abaixo de 10 é 2 + 3 + 5 + 7 = 17.
+
+Encontre a soma de todos os primos abaixo de dois milhões.
+
+Obs: Como este é um desafio das olimpíadas de computação, o uso de bibliotecas externas
+será evitado (pois, é contra as regras). Por esse motivo não vou usar a Classe Thread mesmo que seu
+uso melhora-se a performace do programa.  
+ */
+package somadenumerosprimos;
+
+public class SomaDeNumerosPrimos {
+
+    /*Não existe uma fórmula que gere números primos, na verdade, este é um dos problemas do milênio que tem uma recompensa 
+    de um milhão para quem conseguir resolvê-lo.
+    Então, só podemos usar a força bruta para encontrá-los, neste caso a busca pelo algoritmo mais eficiente é fundamental, 
+    após uma busca rigorosa acredito ter encontrado o algoritmo que é mais “econômico” do ponto de vista dos custos
+    Computacionais. Existe um algoritmo criado por Eratóstenes em 276 aC e é baseado em
+    "peneiras", por exemplo, fora o número 2 nenhum número primo é par (ou seja, múltiplo de 2), então removemos 
+    todos os múltiplos de 2, seguidos pelo próximo número que ainda permanece n alista no caso 3 então removemos todos os múltiplos de 3
+    até a raiz quadrada do comprimento do vetor onde não existe mais múltiplos (isso é um conceito matemático). */
+    public static void main(String[] args) {
+
+        /*Aqui estão as duas variáveis principais, eu as coloquei aqui ao invés de declará-las como constantes para poder alterá-las a fim de fazer testes ou modificações no programa
+    O programa seria ainda mais rápido se eu as declara-se apenas quando fosse usá las.*/
+        int fim = 2000000; //2000000
+
+        int[] todosOsNumeros = new int[fim];
+
+        /* Primeiramente vamos criar um vetor que possua todos os números dentro do intervalo que queremos.*/
+        for (int i = 0; i < todosOsNumeros.length; i++) {
+            todosOsNumeros[i] = i + 1;
+        }
+
+        /*Para determinar se um certo número inteiro é primo, a divisão por tentativa funciona bem. Basta dividi-lo por
+    todos os primos menores ou iguais à sua raiz quadrada (Método burro), mas, este será também o limite para o número de vezes.
+    em que o algoritmo ira passar a peneira no vetor, se considerarmos que o comprimento do vetor é primo(não é) uma vez que fizermos a
+    as varreduras esse numero de vezes sabemos com certeza que já temos o resultado final*/
+        int maximoDePeneiras = (int) Math.sqrt(todosOsNumeros.length);
+        int peneiradas = 1; // Contador do número de vezes em que o foram passadas a peneira.
+        while (peneiradas < maximoDePeneiras) {
+            if (todosOsNumeros[peneiradas] != 0) {
+                for (int i = peneiradas; i < todosOsNumeros.length; i++) {
+                    if (todosOsNumeros[i] % todosOsNumeros[peneiradas] == 0 && todosOsNumeros[i] != todosOsNumeros[peneiradas]) {
+                        todosOsNumeros[i] = 0;
+                    }
+                }
+
+            }
+
+            peneiradas++;
+        }
+
+        int somaDeTodosOsPrimos = -1;
+        /* o numero 1 não é primo, poderia ter omitido desde o inicio mas, isso não mostraria
+    o funcionamento correto do algoritmo de Eratóstenes, então vou retiralo logo na declaração da variavel*/
+
+        for (int i = 0; i < todosOsNumeros.length; i++) // soma de todos os números primos restantes
+        {
+            somaDeTodosOsPrimos = somaDeTodosOsPrimos + todosOsNumeros[i];
+        }
+
+        // Declaração final do programa
+        System.out.println("Soma de todos os numeros primos dentro do intervalo de 1 até o " + fim + " é : " + somaDeTodosOsPrimos);
+
+    }
+
+}
